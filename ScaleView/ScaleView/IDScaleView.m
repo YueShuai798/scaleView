@@ -61,7 +61,7 @@
 @end
 
 
-@interface IDScaleView()
+@interface IDScaleView()<UIGestureRecognizerDelegate>
 @property (weak, nonatomic,)IDShowView *showView;
 @end
 @implementation IDScaleView
@@ -77,10 +77,18 @@
     showView.cornerLineWidth =scaleView.cornerLineWidth;
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:scaleView action:@selector(panGesturEvent:)];
     [showView addGestureRecognizer:panGestureRecognizer];
-    
+
+    UIPinchGestureRecognizer *r2 = [[UIPinchGestureRecognizer alloc]initWithTarget:scaleView action:@selector(pinGesturEvent:)];
+    r2.delegate = scaleView;
+    [showView addGestureRecognizer:r2];
     [scaleView addSubview:showView];
     return scaleView;
 }
+// 允许多个手势并发
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame{
     self =[super initWithFrame:frame];
     self.backColor =[UIColor colorWithWhite:0 alpha:0.5];
@@ -115,6 +123,25 @@
     _cornerColor =cornerColor;
     self.showView.cornerColor =cornerColor;
     [self.showView setNeedsDisplay];
+}
+-(void)pinGesturEvent:(UIPinchGestureRecognizer *)recognizer {
+    CGFloat centerX, centerY, width, height;
+    centerX =recognizer.view.center.x;
+    centerY =recognizer.view.center.y;
+    width =recognizer.view.frame.size.width *recognizer.scale;
+    height =recognizer.view.frame.size.height *recognizer.scale;
+    
+    CGFloat showViewWidth, showViewHeight;
+    
+    showViewWidth = centerX >= recognizer.view.superview.center.x ? MIN((2 *recognizer.view.superview.center.x -centerX) *2 +2 *EXTRA_DISTANCE, width) : MIN(2 *centerX +2 *EXTRA_DISTANCE, width);
+    showViewWidth =MAX(MINIMUM_WIDTH, showViewWidth);
+    
+    showViewHeight = centerY >= recognizer.view.superview.center.y ? MIN((2 *recognizer.view.superview.center.y -centerY) *2+2 *EXTRA_DISTANCE, height) : MIN(2 *centerY+2 *EXTRA_DISTANCE, height);
+    showViewHeight =MAX(MINIMUM_WIDTH, showViewHeight);
+
+    recognizer.view.bounds =CGRectMake(0, 0, showViewWidth, showViewHeight);
+    recognizer.scale = 1;
+    [recognizer.view.superview setNeedsDisplay];
 }
 /**
  手势事件
