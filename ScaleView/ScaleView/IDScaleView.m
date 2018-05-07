@@ -140,6 +140,24 @@
     showViewHeight =MAX(MINIMUM_WIDTH, showViewHeight);
 
     recognizer.view.bounds =CGRectMake(0, 0, showViewWidth, showViewHeight);
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        if ([self.delegate respondsToSelector:@selector(showViewDidBeginDraging:withShowFrame:)]) {
+            CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
+            [self.delegate showViewDidBeginDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+        }
+    } else if (recognizer.state == UIGestureRecognizerStateChanged ||
+               recognizer.state == UIGestureRecognizerStateBegan) {
+        
+        CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
+        if ([self.delegate respondsToSelector:@selector(showViewDidDraging:withShowFrame:)]) {
+            [self.delegate showViewDidDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+        }
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
+        if ([self.delegate respondsToSelector:@selector(showViewDidEndDraging:withShowFrame:)]) {
+            [self.delegate showViewDidEndDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+        }
+    }
     recognizer.scale = 1;
     [recognizer.view.superview setNeedsDisplay];
 }
