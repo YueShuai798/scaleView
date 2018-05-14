@@ -13,7 +13,7 @@
 		223E5D41209DA4A8003A015D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 223E5D40209DA4A8003A015D /* Assets.xcassets */; };
 		223E5D44209DA4A8003A015D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223E5D42209DA4A8003A015D /* LaunchScreen.storyboard */; };
 		223E5D47209DA4A8003A015D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 223E5D46209DA4A8003A015D /* main.m */; };
-		223E5D4F209DA4BA003A015D /* IDScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 223E5D4D209DA4BA003A015D /* IDScaleView.m */; };
+		223E5D4F209DA4BA003A015D /* YSScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 223E5D4D209DA4BA003A015D /* YSScaleView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		223E5D43209DA4A8003A015D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		223E5D45209DA4A8003A015D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		223E5D46209DA4A8003A015D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		223E5D4D209DA4BA003A015D /* IDScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDScaleView.m; sourceTree = "<group>"; };
-		223E5D4E209DA4BA003A015D /* IDScaleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDScaleView.h; sourceTree = "<group>"; };
+		223E5D4D209DA4BA003A015D /* YSScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YSScaleView.m; sourceTree = "<group>"; };
+		223E5D4E209DA4BA003A015D /* YSScaleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YSScaleView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +61,8 @@
 		223E5D36209DA4A7003A015D /* ScaleView */ = {
 			isa = PBXGroup;
 			children = (
-				223E5D4E209DA4BA003A015D /* IDScaleView.h */,
-				223E5D4D209DA4BA003A015D /* IDScaleView.m */,
+				223E5D4E209DA4BA003A015D /* YSScaleView.h */,
+				223E5D4D209DA4BA003A015D /* YSScaleView.m */,
 				223E5D37209DA4A7003A015D /* AppDelegate.h */,
 				223E5D38209DA4A7003A015D /* AppDelegate.m */,
 				223E5D3A209DA4A7003A015D /* ViewController.h */,
@@ -146,7 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				223E5D4F209DA4BA003A015D /* IDScaleView.m in Sources */,
+				223E5D4F209DA4BA003A015D /* YSScaleView.m in Sources */,
 				223E5D3C209DA4A7003A015D /* ViewController.m in Sources */,
 				223E5D47209DA4A8003A015D /* main.m in Sources */,
 				223E5D39209DA4A7003A015D /* AppDelegate.m in Sources */,

@@ -7,9 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "IDScaleView.h"
+#import "YSScaleView.h"
 
-@interface ViewController ()<IDScaleViewDelegate>
+@interface ViewController ()<YSScaleViewDelegate>
 @property (strong, nonatomic)UIImageView *iconView;
 @end
 
@@ -22,18 +22,18 @@
     self.iconView.frame =self.view.bounds;
     self.iconView.userInteractionEnabled =YES;
     
-    IDScaleView *scaleView =[IDScaleView scaleViewWithScaleFrame:self.iconView.frame showFrame:CGRectMake(100, 100, 200, 400)];
+    YSScaleView *scaleView =[YSScaleView scaleViewWithScaleFrame:self.iconView.frame showFrame:CGRectMake(100, 100, 200, 400)];
     [self.iconView addSubview:scaleView];
     scaleView.delegate =self;
 }
 #pragma mark-IDScaleViewDelegate
-- (void)showViewDidBeginDraging:(IDShowView *)showView withShowFrame:(CGRect)frame{
+- (void)showViewDidBeginDraging:(YSShowView *)showView withShowFrame:(CGRect)frame{
     NSLog(@"手势开始");
 }
-- (void)showViewDidDraging:(IDShowView *)showView withShowFrame:(CGRect)frame{
+- (void)showViewDidDraging:(YSShowView *)showView withShowFrame:(CGRect)frame{
     NSLog(@"拖动ing");
 }
-- (void)showViewDidEndDraging:(IDShowView *)showView withShowFrame:(CGRect)frame{
+- (void)showViewDidEndDraging:(YSShowView *)showView withShowFrame:(CGRect)frame{
     NSLog(@"手势结束");
 }
 

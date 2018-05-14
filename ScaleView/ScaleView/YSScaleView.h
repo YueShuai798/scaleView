@@ -8,21 +8,21 @@
 
 
 #import <UIKit/UIKit.h>
-@class IDShowView;
+@class YSShowView;
 
 typedef enum {
-    IDPanAtTopLeftCorner,//左上角
-    IDPanAtTopRightCorner,//右上角
-    IDPanAtBottomLeftCorner,//左下角
-    IDPanAtBottomRightCorner,//右下角
-    IDPanAtTopBorder,//上中
-    IDPanAtBottomBorder,//下中
-    IDPanAtLeftBorder,//左中
-    IDPanAtRightBorder,//右中
-    IDPanAtCenter,//正中
-    IDPanAtNone
-} IDPanPosition;
-@protocol IDScaleViewDelegate<NSObject>
+    YSPanAtTopLeftCorner,//左上角
+    YSPanAtTopRightCorner,//右上角
+    YSPanAtBottomLeftCorner,//左下角
+    YSPanAtBottomRightCorner,//右下角
+    YSPanAtTopBorder,//上中
+    YSPanAtBottomBorder,//下中
+    YSPanAtLeftBorder,//左中
+    YSPanAtRightBorder,//右中
+    YSPanAtCenter,//正中
+    YSPanAtNone
+} YSPanPosition;
+@protocol YSScaleViewDelegate<NSObject>
 @optional
 /**
  开始拖动
@@ -30,29 +30,29 @@ typedef enum {
  @param showView 窗体控件
  @param frame 窗体的大小
  */
-- (void)showViewDidBeginDraging:(IDShowView *)showView withShowFrame:(CGRect)frame;
+- (void)showViewDidBeginDraging:(YSShowView *)showView withShowFrame:(CGRect)frame;
 /**
  正在拖动
  
  @param showView 窗体控件
  @param frame 窗体的大小
  */
-- (void)showViewDidDraging:(IDShowView *)showView withShowFrame:(CGRect)frame;
+- (void)showViewDidDraging:(YSShowView *)showView withShowFrame:(CGRect)frame;
 /**
  拖动完毕
  
  @param showView 窗体控件
  @param frame 窗体的大小
  */
-- (void)showViewDidEndDraging:(IDShowView *)showView withShowFrame:(CGRect)frame;
+- (void)showViewDidEndDraging:(YSShowView *)showView withShowFrame:(CGRect)frame;
 @end
 
-@interface IDShowView:UIView
+@interface YSShowView:UIView
 
 @end
 
-@interface IDScaleView : UIView
-@property (weak, nonatomic)id<IDScaleViewDelegate>delegate;
+@interface YSScaleView : UIView
+@property (weak, nonatomic)id<YSScaleViewDelegate>delegate;
 
 /**
  默认灰色的背景颜色

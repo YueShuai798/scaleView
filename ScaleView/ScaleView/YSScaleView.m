@@ -8,51 +8,52 @@
 #define EXTRA_DISTANCE 15.0
 #define GESTURE_DETECTION_LENGTH 35.0   //手势限制距离
 #define MINIMUM_WIDTH 90.0
-#import "IDScaleView.h"
+#import "YSScaleView.h"
 
 
-@interface IDShowView()
+@interface YSShowView()
 @property (strong, nonatomic)UIColor *cornerColor;
 @property (assign, nonatomic)CGFloat cornerWidth;
 @property (assign, nonatomic)CGFloat cornerLineWidth;
 @end
 
 
-@implementation IDShowView
+@implementation YSShowView
 - (void)drawRect:(CGRect)rect {
     [[UIColor whiteColor] setFill];
     
-    UIRectFill(CGRectMake(15,
-                          15,
-                          rect.size.width - 2*15,
-                          rect.size.height - 2*15));
-    
+
+    UIRectFill(CGRectMake(EXTRA_DISTANCE,
+                          EXTRA_DISTANCE,
+                          rect.size.width - 2*EXTRA_DISTANCE,
+                          rect.size.height - 2*EXTRA_DISTANCE));
+
     [[UIColor clearColor] setFill];
-    
-    UIRectFill(CGRectMake(3 + 15,
-                          3 + 15,
-                          rect.size.width - (3 + 15)*2,
-                          rect.size.height - (3 + 15)*2));
-    
-    UIRectFill(CGRectMake(20 + 15,
-                          15,
-                          self.frame.size.width - (20 + 15)*2,
-                          3 ));
-    
-    UIRectFill(CGRectMake(20 + 15,
-                          self.frame.size.height - 3 - 15,
-                          self.frame.size.width - (20 + 15)*2,
-                          3 ));
-    
-    UIRectFill(CGRectMake(15,
-                          20 + 15,
-                          3 ,
-                          self.frame.size.height - (20 + 15)*2));
-    
-    UIRectFill(CGRectMake(self.frame.size.width - 3 - 15,
-                          20 + 15,
-                          3,
-                          self.frame.size.height - (20 + 15)*2));
+
+    UIRectFill(CGRectMake(3 + EXTRA_DISTANCE,
+                          3 + EXTRA_DISTANCE,
+                          rect.size.width - (3 + EXTRA_DISTANCE)*2,
+                          rect.size.height - (3 + EXTRA_DISTANCE)*2));
+
+    UIRectFill(CGRectMake(20 + EXTRA_DISTANCE,
+                          EXTRA_DISTANCE-1,
+                          self.frame.size.width - (20 + EXTRA_DISTANCE)*2,
+                          3 +2));
+
+    UIRectFill(CGRectMake(20 + EXTRA_DISTANCE,
+                          self.frame.size.height - 3 - EXTRA_DISTANCE -1,
+                          self.frame.size.width - (20 + EXTRA_DISTANCE)*2,
+                          3 +2));
+
+    UIRectFill(CGRectMake(EXTRA_DISTANCE -1,
+                          20 + EXTRA_DISTANCE,
+                          3 +2,
+                          self.frame.size.height - (20 + EXTRA_DISTANCE)*2));
+
+    UIRectFill(CGRectMake(self.frame.size.width - 3 - EXTRA_DISTANCE -1,
+                          20 + EXTRA_DISTANCE,
+                          3 +2,
+                          self.frame.size.height - (20 + EXTRA_DISTANCE)*2));
 }
 
 
@@ -61,15 +62,15 @@
 @end
 
 
-@interface IDScaleView()<UIGestureRecognizerDelegate>
-@property (weak, nonatomic,)IDShowView *showView;
+@interface YSScaleView()<UIGestureRecognizerDelegate>
+@property (weak, nonatomic,)YSShowView *showView;
 @end
-@implementation IDScaleView
+@implementation YSScaleView
 + (instancetype)scaleViewWithScaleFrame:(CGRect)scaleFrame showFrame:(CGRect)showFrame{
-    IDScaleView *scaleView =[[IDScaleView alloc]initWithFrame:scaleFrame];
+    YSScaleView *scaleView =[[YSScaleView alloc]initWithFrame:scaleFrame];
     scaleView.showFrame =showFrame;
     
-    IDShowView *showView =[[IDShowView alloc]initWithFrame:showFrame];
+    YSShowView *showView =[[YSShowView alloc]initWithFrame:showFrame];
     showView.backgroundColor =[UIColor clearColor];
     scaleView.showView =showView;
     showView.cornerColor =scaleView.cornerColor;
@@ -119,6 +120,12 @@
     [super setFrame:frame];
     [self setNeedsDisplay];
 }
+- (void)setShowFrame:(CGRect)showFrame{
+    _showFrame =showFrame;
+    self.showView.frame =CGRectMake(showFrame.origin.x -EXTRA_DISTANCE, showFrame.origin.y -EXTRA_DISTANCE, showFrame.size.width +2*EXTRA_DISTANCE, showFrame.size.height +2*EXTRA_DISTANCE);
+    [self.showView setNeedsDisplay];
+    [self setNeedsDisplay];
+}
 - (void)setCornerColor:(UIColor *)cornerColor{
     _cornerColor =cornerColor;
     self.showView.cornerColor =cornerColor;
@@ -143,19 +150,19 @@
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         if ([self.delegate respondsToSelector:@selector(showViewDidBeginDraging:withShowFrame:)]) {
             CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
-            [self.delegate showViewDidBeginDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidBeginDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     } else if (recognizer.state == UIGestureRecognizerStateChanged ||
                recognizer.state == UIGestureRecognizerStateBegan) {
         
         CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
         if ([self.delegate respondsToSelector:@selector(showViewDidDraging:withShowFrame:)]) {
-            [self.delegate showViewDidDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
         if ([self.delegate respondsToSelector:@selector(showViewDidEndDraging:withShowFrame:)]) {
-            [self.delegate showViewDidEndDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidEndDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     }
     recognizer.scale = 1;
@@ -167,12 +174,12 @@
  @param recognizer 手势对象
  */
 - (void)panGesturEvent:(UIPanGestureRecognizer *)recognizer {
-    static IDPanPosition panPosition =IDPanAtNone;
+    static YSPanPosition panPosition =YSPanAtNone;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         panPosition =getPosition([recognizer locationInView:recognizer.view], recognizer.view.frame.size);
         if ([self.delegate respondsToSelector:@selector(showViewDidBeginDraging:withShowFrame:)]) {
             CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
-            [self.delegate showViewDidBeginDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidBeginDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     } else if (recognizer.state == UIGestureRecognizerStateChanged ||
                recognizer.state == UIGestureRecognizerStateBegan) {
@@ -181,7 +188,7 @@
         CGFloat x, y, width, height;
         
         switch (panPosition) {
-            case IDPanAtCenter:{
+            case YSPanAtCenter:{
                 CGFloat _x = showFrame.origin.x + translation.x;
                 CGFloat _y = showFrame.origin.y + translation.y;
                 x = MIN(MAX(-EXTRA_DISTANCE, _x), recognizer.view.superview.frame.size.width - recognizer.view.frame.size.width + EXTRA_DISTANCE);
@@ -190,7 +197,7 @@
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtTopLeftCorner:{
+            case YSPanAtTopLeftCorner:{
                 x = MAX(-EXTRA_DISTANCE, MIN(showFrame.origin.x + translation.x, showFrame.origin.x + showFrame.size.width - MINIMUM_WIDTH ));
                 y = MAX(-EXTRA_DISTANCE, MIN(showFrame.origin.y + translation.y, showFrame.origin.y + showFrame.size.height - MINIMUM_WIDTH ));
                 width = showFrame.origin.x + showFrame.size.width - x;
@@ -200,14 +207,14 @@
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtTopRightCorner:{
+            case YSPanAtTopRightCorner:{
                 height = MIN(MAX(MINIMUM_WIDTH, showFrame.size.height - translation.y), showFrame.size.height + showFrame.origin.y + EXTRA_DISTANCE);
                 width =  MIN(MAX(MINIMUM_WIDTH, showFrame.size.width + translation.x), recognizer.view.superview.frame.size.width - showFrame.origin.x + EXTRA_DISTANCE);
                 showFrame = CGRectMake(showFrame.origin.x, showFrame.origin.y + showFrame.size.height - height, width, height);
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtBottomLeftCorner:{
+            case YSPanAtBottomLeftCorner:{
                 if (translation.x > -EXTRA_DISTANCE && showFrame.size.width == MINIMUM_WIDTH) {
                     return;
                 }
@@ -219,32 +226,32 @@
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtBottomRightCorner:{
+            case YSPanAtBottomRightCorner:{
                 showFrame.size = CGSizeMake(MIN(MAX(MINIMUM_WIDTH, showFrame.size.width + translation.x), recognizer.view.superview.frame.size.width - showFrame.origin.x + EXTRA_DISTANCE),
                                             MIN(MAX(MINIMUM_WIDTH, showFrame.size.height + translation.y), recognizer.view.superview.frame.size.height - showFrame.origin.y + EXTRA_DISTANCE));
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtLeftBorder:{
+            case YSPanAtLeftBorder:{
                 x = MIN(MAX(-EXTRA_DISTANCE, showFrame.origin.x + translation.x), showFrame.origin.x + showFrame.size.width - MINIMUM_WIDTH);
                 width = showFrame.origin.x + showFrame.size.width - x;
                 showFrame = CGRectMake(x, showFrame.origin.y, width, showFrame.size.height);
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtTopBorder:{
+            case YSPanAtTopBorder:{
                 height = MIN(MAX(MINIMUM_WIDTH, showFrame.size.height - translation.y), showFrame.size.height + showFrame.origin.y + EXTRA_DISTANCE);
                 showFrame = CGRectMake(showFrame.origin.x, showFrame.origin.y + showFrame.size.height - height, showFrame.size.width, height);
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtRightBorder:{
+            case YSPanAtRightBorder:{
                 width =  MIN(MAX(MINIMUM_WIDTH, showFrame.size.width + translation.x), recognizer.view.superview.frame.size.width - showFrame.origin.x + EXTRA_DISTANCE);
                 showFrame = CGRectMake(showFrame.origin.x, showFrame.origin.y, width, showFrame.size.height);
                 recognizer.view.frame = showFrame;
                 break;
             }
-            case IDPanAtBottomBorder:{
+            case YSPanAtBottomBorder:{
                 height = MIN(MAX(showFrame.size.height + translation.y, MINIMUM_WIDTH), recognizer.view.superview.frame.size.height - showFrame.origin.y + EXTRA_DISTANCE);
                 showFrame = CGRectMake(showFrame.origin.x, showFrame.origin.y, showFrame.size.width, height);
                 recognizer.view.frame = showFrame;
@@ -259,12 +266,12 @@
         
         CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
         if ([self.delegate respondsToSelector:@selector(showViewDidDraging:withShowFrame:)]) {
-            [self.delegate showViewDidDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGRect trueFrame =CGRectMake(recognizer.view.frame.origin.x +EXTRA_DISTANCE, recognizer.view.frame.origin.y +EXTRA_DISTANCE, recognizer.view.frame.size.width -2*EXTRA_DISTANCE, recognizer.view.frame.size.height -2*EXTRA_DISTANCE);
         if ([self.delegate respondsToSelector:@selector(showViewDidEndDraging:withShowFrame:)]) {
-            [self.delegate showViewDidEndDraging:(IDShowView *)recognizer.view withShowFrame:trueFrame];
+            [self.delegate showViewDidEndDraging:(YSShowView *)recognizer.view withShowFrame:trueFrame];
         }
     }
 }
@@ -275,46 +282,46 @@
  @param size 当前窗体的大小
  @return 返回在窗体的触摸位置
  */
-IDPanPosition getPosition(CGPoint position, CGSize size){
+YSPanPosition getPosition(CGPoint position, CGSize size){
     CGFloat x = position.x;
     CGFloat y = position.y;
     CGFloat width = size.width;
     CGFloat height = size.height;
     
-    IDPanPosition panPosition = IDPanAtNone;
+    YSPanPosition panPosition = YSPanAtNone;
     if (y >= height - GESTURE_DETECTION_LENGTH &&
         x >= width - GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtBottomRightCorner;//右下
+        panPosition = YSPanAtBottomRightCorner;//右下
     }
     else if (y >= height - GESTURE_DETECTION_LENGTH &&
              x <= GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtBottomLeftCorner;//左下
+        panPosition = YSPanAtBottomLeftCorner;//左下
     }
     else if (y <= GESTURE_DETECTION_LENGTH &&
              x <= GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtTopLeftCorner;//左上
+        panPosition = YSPanAtTopLeftCorner;//左上
     }
     else if (y <= GESTURE_DETECTION_LENGTH &&
              x >= width - GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtTopRightCorner;//右上
+        panPosition = YSPanAtTopRightCorner;//右上
     }
     else if (x >= GESTURE_DETECTION_LENGTH &&
              x <= width - GESTURE_DETECTION_LENGTH &&
              y >= GESTURE_DETECTION_LENGTH
              && y <= height - GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtCenter;//中间
+        panPosition = YSPanAtCenter;//中间
     }
     else if (x <= GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtLeftBorder;//
+        panPosition = YSPanAtLeftBorder;//
     }
     else if (y <= GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtTopBorder;
+        panPosition = YSPanAtTopBorder;
     }
     else if (x >= width - GESTURE_DETECTION_LENGTH) {
-        panPosition = IDPanAtRightBorder;
+        panPosition = YSPanAtRightBorder;
     }
     else if (y >= height - GESTURE_DETECTION_LENGTH){
-        panPosition = IDPanAtBottomBorder;
+        panPosition = YSPanAtBottomBorder;
     }
     return panPosition;
 }
